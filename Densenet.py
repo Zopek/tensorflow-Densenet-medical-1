@@ -23,7 +23,7 @@ weight_decay = 1e-4
 
 # Label & batch_size
 class_num = 14
-batch_size = 100
+batch_size = 64
 
 total_epochs = 50
 
