@@ -172,7 +172,7 @@ class DenseNet():
 x = tf.placeholder(tf.float32, shape=[None, 50176])
 batch_images = tf.reshape(x, [-1, 224, 224, 1])
 
-label = tf.placeholder(tf.float32, shape=[None, 14])
+label = tf.placeholder(tf.float32, shape=[None, 4])
 
 training_flag = tf.placeholder(tf.bool)
 
