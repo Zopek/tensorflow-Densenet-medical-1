@@ -23,13 +23,22 @@ def get_num(filepath):
 
 	return train_size, test_size
 
-def label_convert(label):
+# 多标签转换
+def label_convert_mul(label):
 
 	labels = np.array([0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0])
 	labels[int(label[0])] = 1
 	labels[int(label[1]) + 4] = 1
 	labels[int(label[2]) + 7] = 1
 	labels[int(label[3]) + 11] = 1
+
+	return labels.reshape((1, -1)) 
+
+# 单一标签转换
+def label_convert(label):
+
+	labels = np.array([0, 0, 0, 0])
+	labels[int(label[0])] = 1
 
 	return labels.reshape((1, -1)) 
 

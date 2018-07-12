@@ -12,7 +12,7 @@ filepath = '/DATA/data/qyzheng/lesion_one_normal_4'
 
 # Hyperparameter
 growth_k = 12
-nb_block = 3 # how many (dense block + Transition Layer) ?
+nb_block = 2 # how many (dense block + Transition Layer) ?
 init_learning_rate = 1e-4
 epsilon = 1e-4 # AdamOptimizer epsilon
 dropout_rate = 0.2
@@ -22,7 +22,7 @@ nesterov_momentum = 0.9
 weight_decay = 1e-4
 
 # Label & batch_size
-class_num = 14
+class_num = 4
 batch_size = 64
 
 total_epochs = 50
@@ -195,7 +195,7 @@ optimizer = tf.train.AdamOptimizer(learning_rate=learning_rate, epsilon=epsilon)
 train = optimizer.minimize(cost)
 
 
-correct_prediction = tf.equal(tf.argmax(logits[:, 0:4], 1), tf.argmax(label[:, 0:4], 1))
+correct_prediction = tf.equal(tf.argmax(logits, 1), tf.argmax(label, 1))
 accuracy = tf.reduce_mean(tf.cast(correct_prediction, tf.float32))
 
 tf.summary.scalar('loss', cost)
