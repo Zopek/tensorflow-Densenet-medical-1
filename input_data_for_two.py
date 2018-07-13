@@ -14,11 +14,11 @@ def get_num(filepath):
 	train_size = 0
 	test_size = 0
 	# 训练集在3个文件夹中，每个文件夹中数据数相同，总数目乘3可得
-	dirs = os.listdir(filepath + '/' + str(2))
+	dirs = os.listdir(filepath + '/' + str(1))
 	train_size += len(dirs)
 
 	# 测试集在1个文件夹中
-	dirs = os.listdir(filepath + '/' + str(1))
+	dirs = os.listdir(filepath + '/' + str(2))
 	test_size += len(dirs)
 
 	return train_size, test_size
@@ -47,15 +47,22 @@ def train_next_batch(filepath, step, batch_size):
 	train_size, test_size = get_num(filepath)
 	current_num = step * batch_size
 
-	# train_sets 2, 3, 4
-	current_file = int(current_num / train_size) + 2
-	next_file = int((current_num + batch_size) / train_size) + 2
+	# train_sets 1, 3, 4
+	current_file = int(current_num / train_size) + 1
+	next_file = int((current_num + batch_size) / train_size) + 1
+	if current_file > 1:
+		current_file += 1
+	if next_file > 1:
+		next_file += 1
 	# print(current_file, ' ', next_file)
 	# 如果当前文件夹剩余数据不足一个batch，则与下一个文件夹数据合并
 	if current_file != next_file:
 		# 获取当前文件夹下文件名列表
 		dirs = os.listdir(filepath + '/' + str(current_file))
-		current_file_num = current_num - train_size * (current_file - 2)
+		if current_file == 1:
+			current_file_num = current_num - train_size * (current_file - 1)
+		else:
+			current_file_num = current_num - train_size * (current_file - 2)
 		# 取出当前文件夹剩余数据
 		for filename in dirs[current_file_num:train_size]:
 			# 取出图像
@@ -98,7 +105,10 @@ def train_next_batch(filepath, step, batch_size):
 		return images, labels
 	else:
 		dirs = os.listdir(filepath + '/' + str(current_file))
-		current_file_num = current_num - train_size * (current_file - 2)
+		if current_file == 1:
+			current_file_num = current_num - train_size * (current_file - 1)
+		else:
+			current_file_num = current_num - train_size * (current_file - 2)
 		for filename in dirs[current_file_num:(current_file_num + batch_size)]:
 			# 取出图像
 			image = np.load(filepath + '/' + str(current_file) + '/' + filename + '/image.npy')
@@ -124,17 +134,17 @@ def test_next_batch(filepath, step):
 
 	# 300 one time
 	current_num = step * 300
-	dirs = os.listdir(filepath + '/' + str(1))
+	dirs = os.listdir(filepath + '/' + str(2))
 	for filename in dirs[current_num:(current_num + 300)]:
 		# 取出图像
-		image = np.load(filepath + '/' + str(1) + '/' + filename + '/image.npy')
+		image = np.load(filepath + '/' + str(2) + '/' + filename + '/image.npy')
 		image = image.reshape((1, -1))
 		if filename == dirs[current_num]:
 			images = image
 		else:
 			images = np.vstack((images, image))
 		# 取出标签
-		label = np.load(filepath + '/' + str(1) + '/' + filename + '/label.npy')
+		label = np.load(filepath + '/' + str(2) + '/' + filename + '/label.npy')
 		label = label_convert(label)
 		if filename == dirs[current_num]:
 			labels = label
