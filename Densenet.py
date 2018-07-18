@@ -3,11 +3,11 @@ from tflearn.layers.conv import global_avg_pool
 # from tensorflow.examples.tutorials.mnist import input_data
 from tensorflow.contrib.layers import batch_norm, flatten
 from tensorflow.contrib.framework import arg_scope
-import input_data_for_patient as input_data
+import input_data as input_data
 import numpy as np
 import time
 
-filepath = '/DATA/data/hyguan/liuyuan_spine/data_all/patient_image_4'
+filepath = '/DATA/data/qyzheng/lesion_one_normal_4'
 # mnist = load_all_sets(filepath)
 
 # Hyperparameter
@@ -26,7 +26,7 @@ weight_decay = 1e-4
 class_num = 4
 batch_size = 32
 
-total_epochs = 50
+total_epochs = 100
 
 
 def conv_layer(input, filter, kernel, stride=1, layer_name="conv"):
@@ -234,7 +234,7 @@ with tf.Session() as sess:
         if epoch == (total_epochs * 0.5) or epoch == (total_epochs * 0.75):
             epoch_learning_rate = epoch_learning_rate / 10
 
-        train_size, test_size = input_data.get_size(filepath)
+        train_size, test_size = input_data.get_num(filepath)
         total_train_batch = int(train_size / batch_size)
         total_test_batch = int(test_size / 300)
         # total_batch = int(mnist.train.num_examples / batch_size)
@@ -308,9 +308,5 @@ with tf.Session() as sess:
         accuracy_rates = sess.run(accuracy, feed_dict=test_feed_dict)
         print('Epoch:', '%04d' % (epoch + 1), '/ Test2 Accuracy =', accuracy_rates)
         """
-        if epoch == 30:
-            saver.save(sess=sess, save_path='./model/dense0.ckpt')
-        elif epoch == 40:
-            saver.save(sess=sess, save_path='./model/dense1.ckpt')
 
     saver.save(sess=sess, save_path='./model/dense.ckpt')
