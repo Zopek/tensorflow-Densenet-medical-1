@@ -9,39 +9,17 @@ import sys
 import numpy as np
 import time
 
-def get_train_dir(filepath):
+def get_dir(filepath):
 
-	for h in range(1,4):
-		dirs = os.listdir(filepath + '/' + str(h))
-		for i in range(len(dirs)):
-			dirs_next = os.listdir(filepath + '/' + str(h) + '/' + dirs[i])
-			for j in range(len(dirs_next)):
-				if h == 1 and i == 0 and j == 0:
-					dirs_list = [str(h) + '/' + dirs[i] + '/' + dirs_next[j]]
-				else:
-					dirs_list.append(str(h) + '/' + dirs[i] + '/' + dirs_next[j])
+	dirs = os.listdir(filepath)
 
-	return dirs_list
-
-def get_test_dir(filepath):
-
-	dirs = os.listdir(filepath + '/4')
-	for i in range(len(dirs)):
-		dirs_next = os.listdir(filepath + '/4' + '/' + dirs[i])
-		for j in range(len(dirs_next)):
-			if i == 0 and j == 0:
-				dirs_list = ['4/' + dirs[i] + '/' + dirs_next[j]]
-			else:
-				dirs_list.append('4/' + dirs[i] + '/' + dirs_next[j])
-
-	return dirs_list
+	return dirs
 
 def get_size(filepath):
 
-	train_dirs = get_train_dir(filepath)
-	test_dirs = get_test_dir(filepath)
+	dirs = get_dir(filepath)
 
-	return len(train_dirs), len(test_dirs)
+	return len(dirs)
 
 # 多标签转换
 def label_convert_mul(label):
